@@ -15,6 +15,7 @@ a.4. Functionality for editing data from the server
 a.5. Functionality for deleting data from the server
 a.6. At least 1 AJAX call to the server
 a.7. At least 5 unit test, for the application functionality
+
 b. Web API Structure
 b.1.  At least 2 data models (two tables in DB)
 b.2. At least 10 endpoints
