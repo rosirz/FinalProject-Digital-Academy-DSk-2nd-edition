@@ -1,0 +1,139 @@
+﻿@model FinalProject_2nd_edition.Models.BookViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Book</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Author" class="control-label"></label>
+                <select asp-for="AuthorId" id="sel-auth" class="form-control" asp-items="@Model.AuthorList">
+                    <option>Please select author</option>
+                </select>
+                <span asp-validation-for="Author.Name" class="text-danger"></span>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal">Add author</button>
+            </div>
+            <div class="form-group">
+                <label asp-for="Genre" class="control-label"></label>
+                <select asp-for="GenreId" id="sel-gen" class="form-control" asp-items="@Model.GenreList">
+                    <option>Please select genre</option>
+                </select>
+
+                <span asp-validation-for="Genre.Name" class="text-danger"></span>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-modal2">Add genre</button>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+<div class="modal fade" id="add-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add author</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <label>Author name</label>
+                <input id="author" class="form-control" type="text" />
+                <label>Details</label>
+                <input id="description" class="form-control" type="text" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cls-btn" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="addAuthor()" class="btn btn-danger">Add author</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    debugger
+    const addAuthor = () => {
+        let authortoAdd = document.getElementById("author").value;
+        let descriptiontoAdd = document.getElementById("description").value;
+        
+        fetch(`/Books/AddAuthor?authorName=${authortoAdd}&authorDescription=${descriptiontoAdd}`)
+            .then((response) => response.json())
+            .then((data) => handleResponse(data));
+     }
+
+    const handleResponse = (data) => {
+        let selectElement = document.getElementById("sel-auth");
+        let opt = document.createElement('option');
+        opt.value = data.id;
+        opt.innerHTML = data.name;
+        selectElement.appendChild(opt);
+        document.getElementById("cls-btn").click();
+    }
+</script>
+
+<div class="modal fade" id="add-modal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add genre</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input id="genre" class="form-control" type="text" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cls-btn1" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button onclick="addGenre()" class="btn btn-danger">Add genre</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const addGenre = () => {
+        let genretoAdd = document.getElementById("genre").value;
+        fetch(`/Books/AddGenre?genreName=${genretoAdd}`)
+            .then((response) => response.json())
+            .then((data) => handleResponse2(data));
+    }
+
+    const handleResponse2 = (data) => {
+        let selectElement = document.getElementById("sel-gen");
+        let opt = document.createElement('option');
+        opt.value = data.id;
+        opt.innerHTML = data.name;
+        selectElement.appendChild(opt);
+        document.getElementById("cls-btn1").click();
+
+    }
+</script>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
