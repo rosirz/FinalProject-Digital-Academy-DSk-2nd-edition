@@ -66,9 +66,16 @@ namespace FinalProject_2nd_edition.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.genreService.Add(GetGenreDataModel(genre));
+                if (GenreExists(GetGenreDataModel(genre).Name))
+                {
+                    ModelState.AddModelError("name", "The genre already exists");
+                }
+                else
+                {
+                    this.genreService.Add(GetGenreDataModel(genre));
 
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(genre);
         }
@@ -147,14 +154,36 @@ namespace FinalProject_2nd_edition.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var genre = this.genreService.GetById(id);
-            this.genreService.Delete(genre);
-            return RedirectToAction(nameof(Index));
+            
+                var genre = this.genreService.GetById(id);
+                var model = GetGenreViewModel(genre);
+            if (ModelState.IsValid)
+            {
+                if (CheckBooks(genre) || genre.AuthorGenres != null)
+                {
+                    ModelState.AddModelError("name", "You could not delete genre if there are books or authors of this genre");
+                    
+                }
+                
+                else
+                {
+                    this.genreService.Delete(genre);
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            return View(model);
         }
+       
 
         private bool GenreExists(int id)
         {
             return this.genreService.GenreExists(id);
+
+        }
+
+        private bool GenreExists(string name)
+        {
+            return this.genreService.GenreExists(name);
 
         }
 

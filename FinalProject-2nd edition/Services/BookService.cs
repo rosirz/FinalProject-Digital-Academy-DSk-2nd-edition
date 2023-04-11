@@ -2,6 +2,7 @@
 using FinalProject_2nd_edition.DataModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -84,6 +85,11 @@ namespace FinalProject_2nd_edition.Services
             return this.db.Books.Any(b => b.BookId == id);
         }
 
+        public bool BookExists(string bookName)
+        {
+            return this.db.Books.Any(b => b.Name == bookName);
+        }
+
         public void Delete(Book book)
         {
             this.db.Books.Remove(book);
@@ -139,5 +145,7 @@ namespace FinalProject_2nd_edition.Services
                                           .ToList();
             return book.GenreList;
         }
+
+       
     }
 }

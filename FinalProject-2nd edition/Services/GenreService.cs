@@ -56,5 +56,10 @@ namespace FinalProject_2nd_edition.Services
         {
             return db.Genres.Any(e => e.GenreId == id);
         }
+
+        public bool GenreExists(string genreName)
+        {
+            return db.Genres.Any(e => e.Name == genreName);
+        }
     }
 }

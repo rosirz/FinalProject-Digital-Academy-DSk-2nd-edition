@@ -11,6 +11,8 @@ namespace FinalProject_2nd_edition.Services
 
         public bool GenreExists(int id);
 
+        public bool GenreExists(string genreName);
+
         void Add(Genre genre);
         void Update(Genre genre); 
         

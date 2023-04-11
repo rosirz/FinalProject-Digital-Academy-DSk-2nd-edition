@@ -65,10 +65,22 @@ namespace FinalProject_2nd_edition.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.authorService.Add(GetAuthorDataModel(author));
-                return RedirectToAction(nameof(Index));
+                if (AuthorExists((GetAuthorDataModel(author).Name)))
+                {
+                    ModelState.AddModelError("name", "The author already exists");
+                }
+                else
+                {
+                    this.authorService.Add(GetAuthorDataModel(author));
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(author);
+        }
+
+        private bool AuthorExists(string name)
+        {
+            return this.authorService.AuthorExists(name);
         }
 
         // GET: Authors/Edit/5
@@ -146,8 +158,21 @@ namespace FinalProject_2nd_edition.Controllers
         public IActionResult DeleteConfirmed(int id)
         {
             var author = this.authorService.GetById(id);
-            this.authorService.Delete(author); 
-            return RedirectToAction(nameof(Index));
+            var model = GetAuthorViewModel(author);
+            if (ModelState.IsValid)
+            {
+                if (CheckBooks(author) || author.AuthorGenres != null)
+                {
+                    ModelState.AddModelError("name", "You could not delete author if there are books or genres of this author");
+                }
+                else 
+                {
+                    this.authorService.Delete(author);
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            return View(model);
+
         }
 
        

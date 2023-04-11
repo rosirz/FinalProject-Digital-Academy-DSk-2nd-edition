@@ -11,6 +11,8 @@ namespace FinalProject_2nd_edition.Services
 
         public bool AuthorExists(int id);
 
+        public bool AuthorExists(string authorName);
+
         void Add(Author author);
         void Update(Author author);
 

@@ -70,12 +70,20 @@ namespace FinalProject_2nd_edition.Controllers
             if (ModelState.IsValid)
             {
                 var bookToAdd = GetBookDataModel(book);
-                this.bookService.Add(bookToAdd);
-                this.bookService.AddBookInAuthor(bookToAdd);
-                this.bookService.AddBookInGenre(bookToAdd);
-                this.bookService.AddInAuthorGenre(bookToAdd);
-                
-                return RedirectToAction(nameof(Index));
+                if (BookExists(bookToAdd.Name))
+                {
+                    ModelState.AddModelError("name", "The book already exists");
+                }
+                //var bookToAdd = GetBookDataModel(book);
+                else
+                {
+                    this.bookService.Add(bookToAdd);
+                    this.bookService.AddBookInAuthor(bookToAdd);
+                    this.bookService.AddBookInGenre(bookToAdd);
+                    this.bookService.AddInAuthorGenre(bookToAdd);
+
+                    return RedirectToAction(nameof(Index));
+                }
             }
             
             return View(book);
@@ -194,6 +202,11 @@ namespace FinalProject_2nd_edition.Controllers
         private bool BookExists(int id)
         {
             return this.bookService.BookExists(id);
+        }
+
+        private bool BookExists(string bookName)
+        {
+            return this.bookService.BookExists(bookName);
         }
 
         private Book GetBookDataModel (BookViewModel book)

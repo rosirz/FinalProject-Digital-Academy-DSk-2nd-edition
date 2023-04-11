@@ -11,6 +11,10 @@ namespace FinalProject_2nd_edition.Services
 
         public bool BookExists(int id);
 
+        public bool BookExists(string bookName);
+
+        
+
         public bool AuthorGenreExists(AuthorGenres source);
 
         void Add(Book book);

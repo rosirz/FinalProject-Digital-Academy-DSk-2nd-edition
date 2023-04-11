@@ -25,6 +25,11 @@ namespace FinalProject_2nd_edition.Services
             return db.Authors.Any(x => x.AuthorId == id);
         }
 
+        public bool AuthorExists(string authorName)
+        {
+            return db.Authors.Any(x => x.Name == authorName);
+        }
+
         public void Delete(Author author)
         {
             this.db.Remove(author);
