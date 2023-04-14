@@ -244,7 +244,7 @@ namespace FinalProject_2nd_edition.Controllers
             return model;
         }
 
-        private IEnumerable<BookViewModel> GetListofBooksViewModel(List<Book> sourse)
+        private ICollection<BookViewModel> GetListofBooksViewModel(List<Book> sourse)
         {
             var books = new List<BookViewModel>();
             foreach (var g in sourse)

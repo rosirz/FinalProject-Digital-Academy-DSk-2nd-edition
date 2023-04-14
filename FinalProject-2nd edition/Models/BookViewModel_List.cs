@@ -4,6 +4,6 @@ namespace FinalProject_2nd_edition.Models
 {
     public class BookViewModel_List
     {
-        public IEnumerable<BookViewModel> List { get; set; }
+        public ICollection <BookViewModel> List { get; set; }
     }
 }

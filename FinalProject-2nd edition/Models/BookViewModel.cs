@@ -1,6 +1,7 @@
 ﻿using FinalProject_2nd_edition.DataModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace FinalProject_2nd_edition.Models
 {
@@ -8,8 +9,11 @@ namespace FinalProject_2nd_edition.Models
     {
         public int BookId { get; set; }
 
+        [StringLength(30, MinimumLength = 3)]
+        [Required]
         public string Name { get; set; }
 
+        [StringLength(300)]
         public string Description { get; set; }
 
         public int GenreId { get; set; }
