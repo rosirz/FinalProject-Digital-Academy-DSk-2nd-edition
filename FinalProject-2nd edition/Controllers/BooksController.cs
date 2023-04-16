@@ -9,9 +9,11 @@ using FinalProject_2nd_edition.Data;
 using FinalProject_2nd_edition.DataModels;
 using FinalProject_2nd_edition.Services;
 using FinalProject_2nd_edition.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject_2nd_edition.Controllers
 {
+    [Authorize(Policy = "RequireAdministratorRole")]
     public class BooksController : Controller
     {
         private readonly IBookService bookService;
@@ -22,6 +24,7 @@ namespace FinalProject_2nd_edition.Controllers
         }
 
         // GET: Books
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var books = this.bookService.GetAll();
@@ -33,6 +36,7 @@ namespace FinalProject_2nd_edition.Controllers
         }
 
         // GET: Books/Details/5
+        [AllowAnonymous]
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -51,6 +55,7 @@ namespace FinalProject_2nd_edition.Controllers
         }
 
         // GET: Books/Create
+       
         public IActionResult Create()
         {
             var book = new Book();

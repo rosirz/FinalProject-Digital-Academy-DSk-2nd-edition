@@ -9,9 +9,11 @@ using FinalProject_2nd_edition.Data;
 using FinalProject_2nd_edition.DataModels;
 using FinalProject_2nd_edition.Services;
 using FinalProject_2nd_edition.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalProject_2nd_edition.Controllers
 {
+    [Authorize(Policy = "RequireAdministratorRole")]
     public class GenresController : Controller
     {
         private readonly IGenreService genreService;
@@ -22,6 +24,7 @@ namespace FinalProject_2nd_edition.Controllers
         }
 
         // GET: Genres
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var genres = this.genreService.GetAll();
@@ -33,6 +36,7 @@ namespace FinalProject_2nd_edition.Controllers
         }
 
         // GET: Genres/Details/5
+        [AllowAnonymous]
         public IActionResult Details(int? id)
         {
             if (id == null)

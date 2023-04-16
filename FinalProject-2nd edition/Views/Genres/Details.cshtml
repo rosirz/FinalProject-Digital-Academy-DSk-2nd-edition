@@ -1,4 +1,6 @@
-﻿@model FinalProject_2nd_edition.Models.GenreViewModel
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@model FinalProject_2nd_edition.Models.GenreViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -27,6 +29,8 @@
                     <tr>
                         <td>
                             @Html.DisplayName(model.Name)
+                            
+                            
                         </td>
 
                     </tr>
@@ -52,6 +56,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.GenreId">Edit</a> |
+    @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.GenreId">Edit</a>
+    }
     <a asp-action="Index">Back to List</a>
 </div>

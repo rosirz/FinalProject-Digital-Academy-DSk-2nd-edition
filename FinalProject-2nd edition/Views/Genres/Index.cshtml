@@ -1,14 +1,18 @@
-﻿@model FinalProject_2nd_edition.Models.GenreViewModel_List
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@model FinalProject_2nd_edition.Models.GenreViewModel_List
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -19,17 +23,21 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.List) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.GenreId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.GenreId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.GenreId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.GenreId">Details</a>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.GenreId">Edit</a>
+                        <a asp-action="Delete" asp-route-id = "@item.GenreId">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

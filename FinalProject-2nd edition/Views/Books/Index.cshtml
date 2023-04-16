@@ -1,14 +1,18 @@
-﻿@model FinalProject_2nd_edition.Models.BookViewModel_List
+﻿@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@model FinalProject_2nd_edition.Models.BookViewModel_List
 
 @{
     ViewData["Title"] = "Index";
 }
 
 <h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+@if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+{
+   <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -22,32 +26,47 @@
                 Genre
             </th>
             <th>
-                Author 
+                Author
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.List) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.BookId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.List)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.Name)
+                </td>
+                @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.BookId">Details</a>
+                        <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
+
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.BookId">Details</a>
+
+
+                    </td>
+                }
+
+
+            </tr>
+        }
     </tbody>
 </table>
