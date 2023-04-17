@@ -77,7 +77,7 @@ namespace FinalProject_2nd_edition.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("AuthorId,Name,Details")] AuthorViewModel author)
+        public IActionResult Create([Bind("AuthorId,Name,PictureUrl, Details")] AuthorViewModel author)
         {
             if (ModelState.IsValid)
             {
@@ -121,7 +121,7 @@ namespace FinalProject_2nd_edition.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("AuthorId,Name,Details")] AuthorViewModel author)
+        public IActionResult Edit(int id, [Bind("AuthorId,Name,PictureUrl, Details")] AuthorViewModel author)
         {
             if (id != author.AuthorId)
             {
@@ -205,6 +205,7 @@ namespace FinalProject_2nd_edition.Controllers
             {
                 AuthorId = author.AuthorId,
                 Name = author.Name,
+                PictureUrl = author.PictureUrl,
                 Details = author.Details
             };
         }
@@ -214,6 +215,7 @@ namespace FinalProject_2nd_edition.Controllers
             var model = new AuthorViewModel();
             model.AuthorId = a.AuthorId;
             model.Name = a.Name;
+            model.PictureUrl = a.PictureUrl;    
             model.Details = a.Details;
             if (CheckBooks(a))
             {

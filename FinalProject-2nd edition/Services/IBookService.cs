@@ -7,6 +7,9 @@ namespace FinalProject_2nd_edition.Services
     public interface IBookService
     {
         public List<Book> GetAll(string searchString, int skip, int take);
+
+        public List<Book> GetLastAdded();
+
         public Book GetById(int? id);
 
         public int GetCount();

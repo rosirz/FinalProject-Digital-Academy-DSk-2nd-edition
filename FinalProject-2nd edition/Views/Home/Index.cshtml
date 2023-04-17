@@ -1,26 +1,30 @@
-﻿@{
+﻿@model FinalProject_2nd_edition.Models.BookViewModel_List
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to Library</h1>
+    <h2 class="display-4">Welcome to Library</h2>
     <p>Library is a simple application in which you may discover books, authors and genres. </p>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>It is made as a Final Project in DSK Reskill Academy </p>
+    <p>You may find the full code <a href="https://github.com/rosirz/FinalProject-Digital-Academy-DSk-2nd-edition">in GitHub</a>.</p>
 </div>
 
 
 <div class="col-md-4">
-    <h2>Books</h2>
+    <h4>Last added books</h4>
+
+    <table style="border-spacing: 40px;">
+        @foreach (var item in Model.List)
+        {
+            <td style="width: 20%;" text-align: center>
+                <a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookId">@Html.DisplayFor(modelItem => item.Name)</a><br/>
+                <a asp-controller="Authors" asp-action="Details" asp-route-id="@item.Author.AuthorId">@Html.DisplayFor(modelItem => item.Author.Name)</a>
+                <img src="@item.PictureUrl" alt="Lights" style="width:200px;height:300px;">
+            </td>
+        }
+    </table>
+
    
-    <p><a class="btn btn-default" href="https://localhost:44346/Books">View all books &raquo;</a></p>
 </div>
-<div class="col-md-4">
-    <h2>Authors</h2>
-    
-    <p><a class="btn btn-default" href="https://localhost:44346/Authors">View all authors &raquo;</a></p>
-</div>
-<div class="col-md-4">
-    <h2>Genres</h2>
-    
-    <p><a class="btn btn-default" href="https://localhost:44346/Genres">View all genres &raquo;</a></p>
-</div>
+

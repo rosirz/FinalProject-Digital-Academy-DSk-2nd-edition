@@ -102,7 +102,7 @@ namespace FinalProject_2nd_edition.Services
             
             if (!String.IsNullOrEmpty(searchString))
             {
-                return (List<Book>)this.db.Books
+                return this.db.Books
                     .Where(b => b.Name.Contains(searchString))
                     .Include(x => x.Author)
                     .Include(x => x.Genre)
@@ -114,7 +114,7 @@ namespace FinalProject_2nd_edition.Services
             }
             else
             {
-                return (List<Book>)this.db.Books
+                return this.db.Books
                     .Include(x => x.Author)
                     .Include(x => x.Genre)
                     .OrderBy(x => x.Name)
@@ -122,6 +122,17 @@ namespace FinalProject_2nd_edition.Services
                     .Take(take)
                     .ToList();
             }
+        }
+
+        public List<Book> GetLastAdded()
+        {
+            return this.db.Books
+                    .Include(x => x.Author)
+                    .Include(x => x.Genre)
+                    .OrderByDescending(x => x.BookId)
+                    .Take(5)
+                    .ToList();
+
         }
 
         public Book GetById(int? id)

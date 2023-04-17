@@ -82,7 +82,7 @@ namespace FinalProject_2nd_edition.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("BookId,Name,Description,GenreId,AuthorId")] BookViewModel book)
+        public ActionResult Create([Bind("BookId,Name,PictureUrl,Description,GenreId,AuthorId")] BookViewModel book)
         {
             if (ModelState.IsValid)
             {
@@ -158,7 +158,7 @@ namespace FinalProject_2nd_edition.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("BookId,Name,Description,GenreId,AuthorId")] BookViewModel book)
+        public IActionResult Edit(int id, [Bind("BookId,Name,PictureUrl, Description,GenreId,AuthorId")] BookViewModel book)
         {
             if (id != book.BookId)
             {
@@ -232,6 +232,7 @@ namespace FinalProject_2nd_edition.Controllers
             {
                 BookId = book.BookId,
                 Name = book.Name,
+                PictureUrl = book.PictureUrl,
                 Description = book.Description,
                 AuthorId = book.AuthorId,
                 Author = book.Author,
@@ -249,6 +250,7 @@ namespace FinalProject_2nd_edition.Controllers
             {
                 BookId = book.BookId,
                 Name = book.Name,
+                PictureUrl = book.PictureUrl,
                 Description = book.Description,
                 AuthorId = book.AuthorId,
                 Author = book.Author,

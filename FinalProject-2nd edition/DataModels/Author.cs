@@ -10,8 +10,9 @@ namespace FinalProject_2nd_edition.DataModels
         [StringLength(30, MinimumLength = 3)]
         [Required]
         public string Name { get; set; }
+        public string PictureUrl { get; set; }
 
-        [StringLength(300)]
+
         public string Details { get; set; }
 
         public ICollection<Book> Books { get; set; }

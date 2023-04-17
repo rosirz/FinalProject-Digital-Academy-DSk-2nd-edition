@@ -9,11 +9,12 @@ namespace FinalProject_2nd_edition.Models
     {
         public int BookId { get; set; }
 
-        [StringLength(30, MinimumLength = 3)]
+        [StringLength(30, MinimumLength = 2)]
         [Required]
         public string Name { get; set; }
+        public string PictureUrl { get; set; }
 
-        [StringLength(300)]
+        
         public string Description { get; set; }
 
         public int GenreId { get; set; }

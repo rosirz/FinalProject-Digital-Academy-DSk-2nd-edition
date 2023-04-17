@@ -1,33 +1,34 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @inject IAuthorizationService AuthorizationService
-@model  FinalProject_2nd_edition.Models.BookViewModel_List
+@model FinalProject_2nd_edition.Models.BookViewModel_List
 
 
 @{
-    ViewData["Title"]  = "Index";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Books</h1>
 @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
 {
-   <p>
+    <p>
         <a asp-action="Create">Create New</a>
     </p>
 }
 @using (Html.BeginForm())
 {
     <p>
-        Search by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)  
-        <input type="submit" value="Search" /></p>
+        Search by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
 }
 <table class="table">
     <thead>
         <tr>
             <th>
-                Name
+                
             </th>
             <th>
-                Description
+                Name
             </th>
             <th>
                 Genre
@@ -43,36 +44,39 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name, new {currentFilter=ViewBag.CurrentFilter})
+                    <div class="col-md-3">
+                        <div class="thumbnail">
+                            <a href="@item.PictureUrl">
+                                <img src="@item.PictureUrl" alt="Lights" style="width:100%">
+                               
+                            </a>
+                        </div>
+                     </div>
+                       
+
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+
+                    <a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookId">@Html.DisplayFor(modelItem => item.Name)</a>
                 </td>
                 <td>
-                   
+
                     <a asp-controller="Genres" asp-action="Details" asp-route-id="@item.Genre.GenreId">@Html.DisplayFor(modelItem => item.Genre.Name)</a>
                 </td>
                 <td>
-                    
+
                     <a asp-controller="Authors" asp-action="Details" asp-route-id="@item.Author.AuthorId">@Html.DisplayFor(modelItem => item.Author.Name)</a>
                 </td>
                 @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
                 {
                     <td>
-                        <a asp-action="Details" asp-route-id="@item.BookId">Details</a>
+                        
                         <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a>
                         <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
 
                     </td>
                 }
-                else
-                {
-                    <td>
-                        <a asp-action="Details" asp-route-id="@item.BookId">Details</a>
-
-
-                    </td>
-                }
+               
 
 
             </tr>
@@ -81,45 +85,45 @@
 </table>
 
 <nav aria-label="...">
-        <ul class="pagination">
-            @if (Model.CurrentPage == 1)
+    <ul class="pagination">
+        @if (Model.CurrentPage == 1)
+        {
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link" href="/Books/Index?currentPage=@(Model.CurrentPage-1)" tabindex="-1">Previous</a>
+            </li>
+        }
+        @for (int i = 0; i < Model.TotalPages; i++)
+        {
+            if (i + 1 == Model.CurrentPage)
             {
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                <li class="page-item active">
+                    <a class="page-link" href="/Books/Index?currentPage=@(i + 1)">@(i + 1) <span class="sr-only">(current)</span></a>
                 </li>
             }
             else
             {
-                <li class="page-item">
-                    <a class="page-link" href="/Books/Index?currentPage=@(Model.CurrentPage-1)" tabindex="-1">Previous</a>
-                </li>
+                <li class="page-item"><a class="page-link" href="/Books/Index?currentPage=@(i + 1)">@(i + 1)</a></li>
             }
-            @for (int i = 0; i < Model.TotalPages; i++)
-            {
-                if (i + 1 == Model.CurrentPage)
-                {
-                    <li class="page-item active">
-                        <a class="page-link" href="/Books/Index?currentPage=@(i + 1)">@(i + 1) <span class="sr-only">(current)</span></a>
-                    </li>
-                }
-                else
-                {
-                    <li class="page-item"><a class="page-link" href="/Books/Index?currentPage=@(i + 1)">@(i + 1)</a></li>
-                }
-            }
+        }
 
-            @if (Model.CurrentPage == Model.TotalPages)
-            {
-                <li class="page-item disabled">
-                    <a class="page-link" href="#">Next</a>
-                </li>
-            }
-            else
-            {
-                <li class="page-item">
-                    <a class="page-link" href="/Books/Index?currentPage=@(Model.CurrentPage+1)">Next</a>
-                </li>
-            }
+        @if (Model.CurrentPage == Model.TotalPages)
+        {
+            <li class="page-item disabled">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a class="page-link" href="/Books/Index?currentPage=@(Model.CurrentPage+1)">Next</a>
+            </li>
+        }
 
-        </ul>
-    </nav>
+    </ul>
+</nav>

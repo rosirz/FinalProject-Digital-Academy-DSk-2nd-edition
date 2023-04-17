@@ -6,7 +6,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Genres</h1>
 @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
 {
     <p>
@@ -33,10 +33,11 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                   
+                    <a asp-action="Details" asp-route-id="@item.GenreId">@item.Name</a>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.GenreId">Details</a>
+                    
                     @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
                     {
                         <a asp-action="Edit" asp-route-id="@item.GenreId">Edit</a>
