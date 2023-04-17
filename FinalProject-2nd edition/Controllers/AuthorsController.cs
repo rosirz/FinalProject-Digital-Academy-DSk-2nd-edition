@@ -25,12 +25,24 @@ namespace FinalProject_2nd_edition.Controllers
 
         // GET: Authors
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int currentPage = 1)
         {
-            var authors = this.authorService.GetAll();
+            var skip = (currentPage - 1) * 3;
+            var take = 3;
+            var authors = this.authorService.GetAll(searchString, skip, take);
+            var totalAuthors = this.authorService.GetCount();
+
+            var totalPages = totalAuthors / 3;
+            if (totalAuthors % 3 > 0)
+            {
+                totalPages++;
+            }
+
             var model = new AuthorViewModel_List()
             {
-                List = GetListofAuthorViewModel(authors)
+                List = GetListofAuthorViewModel(authors),
+                CurrentPage = currentPage,
+                TotalPages = totalPages
             };
             return View(model);
         }

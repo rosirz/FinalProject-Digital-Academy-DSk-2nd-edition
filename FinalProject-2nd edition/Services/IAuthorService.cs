@@ -5,9 +5,10 @@ namespace FinalProject_2nd_edition.Services
 {
     public interface IAuthorService
     {
-        List<Author> GetAll();
+        List<Author> GetAll(string searchString, int skip, int take);
 
         public Author GetById(int? id);
+        public int GetCount();
 
         public bool AuthorExists(int id);
 

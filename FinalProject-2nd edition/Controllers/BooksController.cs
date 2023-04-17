@@ -25,12 +25,24 @@ namespace FinalProject_2nd_edition.Controllers
 
         // GET: Books
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index( string searchString, int currentPage = 1)
         {
-            var books = this.bookService.GetAll();
+            var skip = (currentPage - 1) * 3;
+            var take = 3;
+            var books = this.bookService.GetAll(searchString, skip, take);
+            var totalBooks = this.bookService.GetCount();
+
+            var totalPages = totalBooks / 3;
+            if (totalBooks % 3 > 0)
+            {
+                totalPages++;
+            }
+
             var model = new BookViewModel_List()
             {
-                List = GetListofBooksViewModel(books)
+                List = GetListofBooksViewModel(books),
+                CurrentPage = currentPage,
+                TotalPages = totalPages
             };
             return View(model);
         }

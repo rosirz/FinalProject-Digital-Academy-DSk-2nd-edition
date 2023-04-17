@@ -25,20 +25,28 @@ namespace FinalProject_2nd_editionTests
         [Fact]
         public void Test_Index_ReturnsViewForIndex()
         {
-            bookService.Setup(bookService => bookService.GetAll()).Returns
-                (new List<Book>() { new Book(), new Book() });
+            int skip = 0;
+            int take = 0;
+            int page = 0;
+            string searchString = "";
+            bookService.Setup(bookService => bookService.GetAll(searchString, skip, take)).Returns
+        (new List<Book>() { new Book(), new Book() });
 
-            var result = controller.Index();
+            var result = controller.Index(searchString, page);
             Assert.IsType<ViewResult>(result);
         }
         [Fact]
         public void Test_Index_ReturnsExactNunberOfBooks()
         {
-            bookService.Setup(bookService => bookService.GetAll()).Returns
+            int skip = 0;
+            int take = 0;
+            int page = 0;
+            string searchString = "";
+            bookService.Setup(bookService => bookService.GetAll(searchString, skip, take)).Returns
                 (new List<Book>() { new Book(), new Book() });
 
 
-            var result = controller.Index();
+            var result = controller.Index( searchString, page);
             var viewresult = Assert.IsType<ViewResult>(result);
             var books = Assert.IsType<BookViewModel_List>(viewresult.Model);
             Assert.Equal(2, books.List.Count);
@@ -155,7 +163,7 @@ namespace FinalProject_2nd_editionTests
                 BookId = 1,
                 Name = "Name",
                 Description = "Description",
-                
+
             };
             var result = controller.Edit(book.BookId, book);
             var viewresult = Assert.IsType<RedirectToActionResult>(result);
@@ -173,9 +181,9 @@ namespace FinalProject_2nd_editionTests
                 BookId = 1,
                 Name = "Name",
                 Description = "Description",
-               
+
             };
-            controller.Edit(testbook.BookId,testbook);
+            controller.Edit(testbook.BookId, testbook);
             bookService.Verify(x => x.Update(It.IsAny<Book>()), Times.Once);
 
 

@@ -36,13 +36,28 @@ namespace FinalProject_2nd_edition.Services
             this.db.SaveChanges();
         }
 
-        public List<Author> GetAll()
+        public List<Author> GetAll(string searchString, int skip, int take)
         {
-            return this.db.Authors
-                    .OrderByDescending(x => x.AuthorId)
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                return (List<Author>)this.db.Authors
+                    .Where(a => a.Name.Contains(searchString))
+                    .OrderBy(x => x.Name)
+                    .Skip(skip)
+                    .Take(take)
                     .ToList();
+            }
+            else
+            {
+                return this.db.Authors
+                        .OrderBy(x => x.Name)
+                        .Skip(skip)
+                        .Take(take)
+                        .ToList();
+            }
         }
 
+        public int GetCount() => this.db.Authors.Count();
         public Author GetById(int? id)
         {
             return this.db.Authors

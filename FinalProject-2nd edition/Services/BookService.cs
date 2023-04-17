@@ -3,6 +3,7 @@ using FinalProject_2nd_edition.DataModels;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -96,13 +97,31 @@ namespace FinalProject_2nd_edition.Services
             this.db.SaveChanges();
         }
 
-        public List<Book> GetAll()
+        public List<Book> GetAll(string searchString, int skip, int take)
         {
-            return this.db.Books
-                .Include(x => x.Author)
-                .Include(x => x.Genre)
-                .OrderByDescending(x => x.GenreId)
-                .ToList();
+            
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                return (List<Book>)this.db.Books
+                    .Where(b => b.Name.Contains(searchString))
+                    .Include(x => x.Author)
+                    .Include(x => x.Genre)
+                    .OrderBy(x => x.Name)
+                    .Skip(skip)
+                    .Take(take)
+                    .ToList();
+                
+            }
+            else
+            {
+                return (List<Book>)this.db.Books
+                    .Include(x => x.Author)
+                    .Include(x => x.Genre)
+                    .OrderBy(x => x.Name)
+                    .Skip(skip)
+                    .Take(take)
+                    .ToList();
+            }
         }
 
         public Book GetById(int? id)
@@ -112,6 +131,8 @@ namespace FinalProject_2nd_edition.Services
                 .Include(b => b.Genre)
                 .FirstOrDefault(b => b.BookId == id);
         }
+
+        public int GetCount() => this.db.Books.Count();
 
         public void Update(Book book)
         {
@@ -146,6 +167,6 @@ namespace FinalProject_2nd_edition.Services
             return book.GenreList;
         }
 
-       
+
     }
 }

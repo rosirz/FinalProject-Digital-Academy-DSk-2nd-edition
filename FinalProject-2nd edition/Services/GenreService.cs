@@ -30,12 +30,28 @@ namespace FinalProject_2nd_edition.Services
             this.db.SaveChanges();
         }
 
-        public List<Genre> GetAll()
+        public List<Genre> GetAll(string searchString, int skip, int take)
         {
-            return this.db.Genres
-                .OrderByDescending(x=>x.GenreId)
-                .ToList();
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                return this.db.Genres
+                    .Where(g => g.Name.Contains(searchString))
+                    .OrderBy(x => x.Name)
+                    .Skip(skip)
+                    .Take(take)
+                    .ToList();
+            }
+            else
+            {
+                return this.db.Genres
+                    .OrderBy(x => x.Name)
+                    .Skip(skip)
+                    .Take(take)
+                    .ToList();
+            }
         }
+
+        public int GetCount() => this.db.Genres.Count();
 
         public Genre GetById(int? id)
         {

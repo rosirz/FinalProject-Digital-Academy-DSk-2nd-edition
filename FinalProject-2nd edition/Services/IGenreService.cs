@@ -5,9 +5,11 @@ namespace FinalProject_2nd_edition.Services
 {
     public interface IGenreService
     {
-        List<Genre> GetAll();
+        List<Genre> GetAll(string searchString, int skip, int take);
 
         public Genre GetById(int? id);
+
+        public int GetCount();
 
         public bool GenreExists(int id);
 

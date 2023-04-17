@@ -24,12 +24,12 @@
         </dt>
         <dd class="col-sm-10">
             <table class="table">
-                @foreach (var model in Model.Books)
+                @foreach (var item in Model.Books)
                 {
                     <tr>
                         <td>
-                            @Html.DisplayName(model.Name)
-                            
+                           
+                            <a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookId">@Html.DisplayName(item.Name)</a>
                             
                         </td>
 
@@ -42,11 +42,12 @@
         </dt>
         <dd class="col-sm-10">
             <table class="table">
-                    @foreach (var model in Model.Authors)
+                    @foreach (var item in Model.Authors)
                     {
                     <tr>
                         <td>
-                                @Html.DisplayName(model.Name)
+                                
+                                <a asp-controller="Authors" asp-action="Details" asp-route-id="@item.AuthorId">@Html.DisplayName(item.Name)</a>
                         </td>
 
                     </tr>

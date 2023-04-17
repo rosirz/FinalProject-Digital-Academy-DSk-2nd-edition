@@ -25,12 +25,24 @@ namespace FinalProject_2nd_edition.Controllers
 
         // GET: Genres
         [AllowAnonymous]
-        public IActionResult Index()
+        public IActionResult Index(string searchString, int currentPage = 1)
         {
-            var genres = this.genreService.GetAll();
+            var skip = (currentPage - 1) * 3;
+            var take = 3;
+            var genres = this.genreService.GetAll(searchString, skip, take);
+            var totalGenres = this.genreService.GetCount();
+
+            var totalPages = totalGenres / 3;
+            if (totalGenres % 3 > 0)
+            {
+                totalPages++;
+            }
+
             var model = new GenreViewModel_List()
             {
-                List = GetListofGenresViewModel(genres)
+                List = GetListofGenresViewModel(genres),
+                CurrentPage = currentPage,
+                TotalPages = totalPages
             };
             return View(model);
         }
