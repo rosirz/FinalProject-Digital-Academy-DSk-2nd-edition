@@ -96,10 +96,23 @@ namespace FinalProject_2nd_edition.Services
             this.db.Books.Remove(book);
             this.db.SaveChanges();
         }
+        public void DeleteBookInAuthor(Book book)
+        {
+            var author = this.db.Authors.FirstOrDefault(a => a.AuthorId == book.AuthorId);
+            author.Books.Remove(book);
+            this.db.SaveChanges();
+        }
+        public void DeleteBookInGenre(Book book)
+        {
+            var genre = this.db.Genres.FirstOrDefault(g => g.GenreId == book.GenreId);
+            genre.Books.Remove(book);
+            this.db.SaveChanges();
+        }
+
 
         public List<Book> GetAll(string searchString, int skip, int take)
         {
-            
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 return this.db.Books
@@ -110,7 +123,7 @@ namespace FinalProject_2nd_edition.Services
                     .Skip(skip)
                     .Take(take)
                     .ToList();
-                
+
             }
             else
             {

@@ -21,68 +21,33 @@
         <input type="submit" value="Search" />
     </p>
 }
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                
-            </th>
-            <th>
-                Name
-            </th>
-            <th>
-                Genre
-            </th>
-            <th>
-                Author
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.List)
-        {
-            <tr>
-                <td>
-                    <div class="col-md-3">
-                        <div class="thumbnail">
-                            <a href="@item.PictureUrl">
-                                <img src="@item.PictureUrl" alt="Lights" style="width:100%">
-                               
-                            </a>
-                        </div>
-                     </div>
-                       
 
-                </td>
-                <td>
-
-                    <a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookId">@Html.DisplayFor(modelItem => item.Name)</a>
-                </td>
-                <td>
-
-                    <a asp-controller="Genres" asp-action="Details" asp-route-id="@item.Genre.GenreId">@Html.DisplayFor(modelItem => item.Genre.Name)</a>
-                </td>
-                <td>
-
-                    <a asp-controller="Authors" asp-action="Details" asp-route-id="@item.Author.AuthorId">@Html.DisplayFor(modelItem => item.Author.Name)</a>
-                </td>
-                @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
-                {
-                    <td>
-                        
-                        <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
-
-                    </td>
-                }
-               
+<div class="row">
+    @foreach (var item in Model.List)
+    {
+        <div class="col-md-3 mb-3 mb-md-0">
+            <div class="card" style="background:#d4e0f6">
+                <h5 class="card-title text-center" style=text-align: center><a asp-controller="Books" asp-action="Details" asp-route-id="@item.BookId">@Html.DisplayFor(modelItem => item.Name)</a></h5>
+                <p class="card-title text-center" style=text-align: center><a asp-controller="Authors" asp-action="Details" asp-route-id="@item.Author.AuthorId">@Html.DisplayFor(modelItem => item.Author.Name)</a></p>
+                <img class="card-img-top align-self-center" src="@item.PictureUrl" alt="Card image" style="width:220px;height:300px;">
+                <div class="card-body">
+                    <p class="card-title text-center"><a asp-controller="Genres" asp-action="Details" asp-route-id="@item.Genre.GenreId">@Html.DisplayFor(modelItem => item.Genre.Name)</a></p>
+                    @if ((await AuthorizationService.AuthorizeAsync(User, "RequireAdministratorRole")).Succeeded)
+                    {
+                        <p class="card-title text-center">
+                            
+                                <a asp-action="Edit" asp-route-id="@item.BookId">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@item.BookId">Delete</a>
+                           
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 
-            </tr>
-        }
-    </tbody>
-</table>
 
 <nav aria-label="...">
     <ul class="pagination">

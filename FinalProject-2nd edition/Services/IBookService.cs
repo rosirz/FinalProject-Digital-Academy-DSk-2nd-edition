@@ -37,7 +37,9 @@ namespace FinalProject_2nd_edition.Services
         void Update(Book book);
 
         void Delete(Book book);
+        public void DeleteBookInAuthor(Book book);
 
+        public void DeleteBookInGenre(Book book);
         public IEnumerable<SelectListItem> CreateAuthorDropDownList();
 
         public IEnumerable<SelectListItem> CreateGenreDropDownList();

@@ -26,8 +26,8 @@ namespace FinalProject_2nd_editionTests
         public void Test_Index_ReturnsViewForIndex()
         {
             int skip = 0;
-            int take = 0;
-            int page = 0;
+            int take = 3;
+            int page = 1;
             string searchString = "";
             bookService.Setup(bookService => bookService.GetAll(searchString, skip, take)).Returns
         (new List<Book>() { new Book(), new Book() });
@@ -39,8 +39,8 @@ namespace FinalProject_2nd_editionTests
         public void Test_Index_ReturnsExactNunberOfBooks()
         {
             int skip = 0;
-            int take = 0;
-            int page = 0;
+            int take = 3;
+            int page = 1;
             string searchString = "";
             bookService.Setup(bookService => bookService.GetAll(searchString, skip, take)).Returns
                 (new List<Book>() { new Book(), new Book() });
@@ -95,7 +95,7 @@ namespace FinalProject_2nd_editionTests
                 Genre = new Genre()
             };
             var result = controller.Create(book);
-            var viewresult = Assert.IsType<RedirectToActionResult>(result);
+           Assert.IsType<RedirectToActionResult>(result);
         }
         [Fact]
         public void Test_Create_ExecuteOnce_If_ValidModelState()
@@ -185,7 +185,7 @@ namespace FinalProject_2nd_editionTests
             };
             controller.Edit(testbook.BookId, testbook);
             bookService.Verify(x => x.Update(It.IsAny<Book>()), Times.Once);
-
+            
 
         }
 

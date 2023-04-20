@@ -177,9 +177,9 @@ namespace FinalProject_2nd_edition.Controllers
             var model = GetAuthorViewModel(author);
             if (ModelState.IsValid)
             {
-                if (CheckBooks(author) || author.AuthorGenres != null)
+                if (author.Books.Count != 0)
                 {
-                    ModelState.AddModelError("name", "You could not delete author if there are books or genres of this author");
+                    ModelState.AddModelError("name", "You could not delete author if there are books  of this author");
                 }
                 else 
                 {
@@ -217,7 +217,7 @@ namespace FinalProject_2nd_edition.Controllers
             model.Name = a.Name;
             model.PictureUrl = a.PictureUrl;    
             model.Details = a.Details;
-            if (CheckBooks(a))
+            if (a.Books != null)
             {
                 var genres = new List<Genre>();
                 foreach (var item in a.AuthorGenres)
@@ -235,15 +235,7 @@ namespace FinalProject_2nd_edition.Controllers
             }
             return model;
         }
-        private bool CheckBooks(Author a)
-        {
-            if (a.Books != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
+        
         private IEnumerable<AuthorViewModel> GetListofAuthorViewModel(List<Author> sourse)
         {
             var authors = new List<AuthorViewModel>();

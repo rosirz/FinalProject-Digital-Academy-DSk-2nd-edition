@@ -66,6 +66,8 @@
             <div class="modal-body">
                 <label>Author name</label>
                 <input id="author" class="form-control" type="text" />
+                <label>PictureUrl</label>
+                <input id="pictureUrl" class="form-control" type="text" />
                 <label>Details</label>
                 <input id="description" class="form-control" type="text" />
             </div>
@@ -84,8 +86,8 @@
     const addAuthor = () => {
         let authortoAdd = document.getElementById("author").value;
         let descriptiontoAdd = document.getElementById("description").value;
-        
-        fetch(`/Books/AddAuthor?authorName=${authortoAdd}&authorDescription=${descriptiontoAdd}`)
+        let pictureUrltoAdd = document.getElementById("pictureUrl").value;
+        fetch(`/Books/AddAuthor?authorName=${authortoAdd}&authorDescription=${descriptiontoAdd}&pictureUrl=${descriptiontoAdd}`)
             .then((response) => response.json())
             .then((data) => handleResponse(data));
      }

@@ -27,13 +27,13 @@ namespace FinalProject_2nd_edition.Controllers
         [AllowAnonymous]
         public IActionResult Index( string searchString, int currentPage = 1)
         {
-            var skip = (currentPage - 1) * 3;
-            var take = 3;
+            var skip = (currentPage - 1) * 4;
+            var take = 4;
             var books = this.bookService.GetAll(searchString, skip, take);
             var totalBooks = this.bookService.GetCount();
 
-            var totalPages = totalBooks / 3;
-            if (totalBooks % 3 > 0)
+            var totalPages = totalBooks / 4;
+            if (totalBooks % 4 > 0)
             {
                 totalPages++;
             }
@@ -91,7 +91,7 @@ namespace FinalProject_2nd_edition.Controllers
                 {
                     ModelState.AddModelError("name", "The book already exists");
                 }
-                //var bookToAdd = GetBookDataModel(book);
+               
                 else
                 {
                     this.bookService.Add(bookToAdd);
@@ -105,18 +105,20 @@ namespace FinalProject_2nd_edition.Controllers
             
             return View(book);
         }
-        public ActionResult AddAuthor(string authorName, string authorDescription)
+        public ActionResult AddAuthor(string authorName, string authorDescription, string pictureUrl)
         {
             var author = new Author();
             author.Name = authorName;
             author.Details = authorDescription;
+            author.PictureUrl = pictureUrl;
             this.bookService.AddAuthor(author);
             var id = author.AuthorId;
             return Ok(new
             {
                 Id = id,
                 Name = authorName,
-            });
+               
+            }) ;
         }
 
         public IActionResult AddGenre(string genreName)
@@ -213,6 +215,8 @@ namespace FinalProject_2nd_edition.Controllers
         {
             var book = this.bookService.GetById(id);
             this.bookService.Delete(book);
+            this.bookService.DeleteBookInAuthor(book);
+            this.bookService.DeleteBookInGenre(book);
             return RedirectToAction(nameof(Index));
         }
 

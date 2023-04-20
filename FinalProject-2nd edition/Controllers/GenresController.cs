@@ -175,9 +175,9 @@ namespace FinalProject_2nd_edition.Controllers
                 var model = GetGenreViewModel(genre);
             if (ModelState.IsValid)
             {
-                if (CheckBooks(genre) || genre.AuthorGenres != null)
+                if (genre.Books.Count != 0)
                 {
-                    ModelState.AddModelError("name", "You could not delete genre if there are books or authors of this genre");
+                    ModelState.AddModelError("name", "You could not delete genre if there are books of this genre");
                     
                 }
                 
@@ -217,7 +217,7 @@ namespace FinalProject_2nd_edition.Controllers
             var model = new GenreViewModel();
             model.GenreId = g.GenreId;
             model.Name = g.Name;
-            if (CheckBooks(g))
+            if (g.Books != null)
             {
                 var authors = new List<Author>();
                 foreach (var item in g.AuthorGenres)
@@ -235,16 +235,7 @@ namespace FinalProject_2nd_edition.Controllers
             }
             return model;
         }
-        private bool CheckBooks(Genre g)
-        {
-            if (g.Books != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
-
+        
         private IEnumerable<GenreViewModel> GetListofGenresViewModel(List<Genre> sourse)
         {
             var genres = new List<GenreViewModel>();
